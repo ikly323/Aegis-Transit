@@ -1,0 +1,22 @@
+FROM python:3.9-slim
+RUN apt-get update 
+RUN apt-get install dnsutils -yq
+RUN apt-get install python-is-python3 -yq
+RUN apt-get install python3 -yq
+RUN pip3 install grpcio grpcio-tools dataclasses 
+ADD src/contract.py /
+
+#ADD src/protobuf/common_pb2.py /protobuf/
+#ADD src/protobuf/contract_pb2.py /protobuf/
+#ADD src/protobuf/contract_pb2_grpc.py /protobuf/
+COPY src/protobuf/ /protobuf/
+
+
+#ADD src/protobuf/data_entry_pb2.py /protobuf/
+#ADD src/protobuf/contract_contract_service_pb2.py /protobuf/
+#ADD src/protobuf/contract_contract_service_pb2_grpc.py /protobuf/
+
+ADD run.sh /
+RUN chmod 777 run.sh
+RUN chmod +x run.sh
+ENTRYPOINT ["/run.sh"]
