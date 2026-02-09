@@ -9,12 +9,11 @@ BLOCKCHAIN_ADDRESS=$(grep -A5 "node-1" "$DATA_FILE" | grep "blockchain address:"
 KEYPAIR_PASSWORD=$(grep -A5 "node-1" "$DATA_FILE" | grep "keypair password:" | cut -d ':' -f 2 | xargs)
 
 
-
-
 CONTRACT_ID=$(curl -X GET "http://localhost:6872/contracts" -H  "accept: application/json" -H  "X-API-Key: we" | grep -m 1 "contractId" | cut -d ':' -f 2 | cut -d '"' -f 2)
 
 
 curl -X POST "http://localhost:6872/contracts" -H  "accept: application/json" -H  "Content-Type: application/json" -H  "X-API-Key: we" -d "{  \"contracts\": [    \"$CONTRACT_ID\"  ]}" | python3 Rasb_serv.py | tee test.txt
+
 
 if tail -40 test.txt | grep -q "FAIL"; then
 curl -X POST --verbose "http://127.0.0.1:6872/transactions/signAndBroadcast" \
