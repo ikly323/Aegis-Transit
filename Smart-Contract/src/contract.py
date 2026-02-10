@@ -137,7 +137,7 @@ class ContractHandler:
                 common_pb2.DataEntry(key="temperature", string_value="+20/+35"),
                 common_pb2.DataEntry(key="light", string_value="700/1100"),
                 common_pb2.DataEntry(key="press", string_value="900/1100"),
-                common_pb2.DataEntry(key="integrity", string_value='crash!!!')
+                common_pb2.DataEntry(key="integrity", string_value='crash')
             ]
             request = contract_pb2.ExecutionSuccessRequest(
                 tx_id=call_transaction.id,
@@ -207,3 +207,4 @@ if __name__ == '__main__':
     print(f"Calling run() with: conn_id={connection_id}, node={node_host}:{node_port}", file=sys.stderr)
     run(connection_id, node_host, node_port, connection_token)
     print("=== MAIN BLOCK END ===", file=sys.stderr)
+
