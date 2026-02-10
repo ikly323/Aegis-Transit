@@ -80,15 +80,15 @@ class ContractHandler:
 
             results_list = [
                 common_pb2.DataEntry(key="Sender", string_value="OOO sender"),
-		common_pb2.DataEntry(key="INN_sender", string_value="88005553535"),
+		        common_pb2.DataEntry(key="INN_sender", string_value="88005553535"),
                 common_pb2.DataEntry(key="Recipient", string_value="OOO recipient"),
-		common_pb2.DataEntry(key="INN_recipient", string_value="8541268"),
+		        common_pb2.DataEntry(key="INN_recipient", string_value="8541268"),
                 common_pb2.DataEntry(key="Carrier", string_value="OOO carrier"),
-		common_pb2.DataEntry(key="INN_carrier", string_value="542281448"),
+		        common_pb2.DataEntry(key="INN_carrier", string_value="542281448"),
                 common_pb2.DataEntry(key="temperature", string_value="+20/+35"),
-		common_pb2.DataEntry(key="light", string_value="700/1100"),
-		common_pb2.DataEntry(key="press", string_value="900/1100"),
-		common_pb2.DataEntry(key="integrity", string_value="None")
+		        common_pb2.DataEntry(key="light", string_value="700/1100"),
+		        common_pb2.DataEntry(key="press", string_value="900/1100"),
+		        common_pb2.DataEntry(key="integrity", string_value="None")
             ]
 
             request = contract_pb2.ExecutionSuccessRequest(
@@ -119,18 +119,29 @@ class ContractHandler:
 
             contract_key_request = contract_pb2.ContractKeyRequest(
                 contract_id=call_transaction.contract_id,
-                key="sum"
+                key="integrity"
             )
             print("ContractKeyRequest prepared", file=sys.stderr)
 
             print("Calling GetContractKey...", file=sys.stderr)
             contract_key = self.client.GetContractKey(request=contract_key_request, metadata=metadata)
-            old_value = contract_key.entry.int_value
+            old_value = contract_key.entry.string_value
             print(f"Old value from key 'sum': {old_value}", file=sys.stderr)
-
+            results_list = [
+                common_pb2.DataEntry(key="Sender", string_value="OOO sender"),
+                common_pb2.DataEntry(key="INN_sender", string_value="88005553535"),
+                common_pb2.DataEntry(key="Recipient", string_value="OOO recipient"),
+                common_pb2.DataEntry(key="INN_recipient", string_value="8541268"),
+                common_pb2.DataEntry(key="Carrier", string_value="OOO carrier"),
+                common_pb2.DataEntry(key="INN_carrier", string_value="542281448"),
+                common_pb2.DataEntry(key="temperature", string_value="+20/+35"),
+                common_pb2.DataEntry(key="light", string_value="700/1100"),
+                common_pb2.DataEntry(key="press", string_value="900/1100"),
+                common_pb2.DataEntry(key="integrity", string_value='crash!!!')
+            ]
             request = contract_pb2.ExecutionSuccessRequest(
                 tx_id=call_transaction.id,
-                results=[common_pb2.DataEntry(key="integrity", string_value='crash!!!')]
+                results=results_list
             )
             print("ExecutionSuccessRequest prepared", file=sys.stderr)
 
